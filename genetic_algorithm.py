@@ -205,22 +205,27 @@ class GeneticAlgorithm:
         """
         PUT_QUEEN = 1
         NOT_PUT_QUEEN = 0
-        line = '+---' * self.n_queen + '+'
+        line = '╠═══' + '╬═══'* (self.n_queen-1) + '╣'
+        first_line = ('╔' + line[1:-1] + '╗').replace('╬', '╦')
+        last_line = ('╚' + line[1:-1] + '╝').replace('╬', '╩')
         board = [[PUT_QUEEN if queen_pos == _ else NOT_PUT_QUEEN for _ in range(self.n_queen)]
                  for queen_pos in self.best_gen.gen]
         chessboard = ''
-        chessboard += f'{line}\n'
+        chessboard += f'{first_line}\n'
 
         cell_color = lambda i, j:  f'{CONST.BLACK_CELL}' if (i + j) % 2 else f'{CONST.WHITE_CELL}'
         queen_color = lambda i, j:  f'{CONST.BLACK_QUEEN}' if (i + j) % 2 else f'{CONST.WHITE_QUEEN}'
         
         for i, row in enumerate(board):
-            chessboard += '|' + '|'.join('{}'.format(
+            chessboard += '║' + '║'.join('{}'.format(
                 queen_color(i, j) if col == PUT_QUEEN else cell_color(i, j)
             ) for j, col in enumerate(row)
-            ) + '|\n'
-            chessboard += f'{line}\n'
-
+            ) + '║\n'
+            chessboard += f'{line}\n' if i != self.n_queen - 1 else f'{last_line}'
+        
+        
+        
+        
         return chessboard
 
 
